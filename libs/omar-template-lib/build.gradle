@@ -1,7 +1,9 @@
 apply plugin: 'groovy'
 repositories {
+    mavenLocal()
+    maven { url ossimlabsMavenUrl }
     jcenter()
 }
 dependencies {
-    compile 'org.codehaus.groovy:groovy-all:2.4.16'
+    compile "org.codehaus.groovy:groovy-all:${groovyVersion}"
 }

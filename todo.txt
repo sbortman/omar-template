@@ -1,8 +1,9 @@
 TODO:
 
-- More robust scripts (grails profile? gradle tasks)?
+- More robust scripts (grails profile? gradle tasks?)
 - Spring Cloud
 - Docker
 - Publish to Nexus
 - Openshit
+- Jenkins Pipeline
 - Move module list from  settings.gradle to gradle.properties

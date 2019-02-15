@@ -5,14 +5,19 @@ TARGET=$1
 
 mkdir $PWD/apps
 cd $PWD/apps
+
+# Target MUST end with -app suffix for this to work
 grails create-app $TARGET
+
 cd $TARGET
 
+# Get rid of unnecessary files
 rm -rf .gitignore \
        gradle* \
        grailsw* \
        grails-wrapper.jar
 
+# Add placeholder for inclusion of dependencies
 cat >build.gradle <<EOL
 /*
 grails {

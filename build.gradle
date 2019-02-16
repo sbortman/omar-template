@@ -26,10 +26,10 @@ subprojects { project ->
 	
 	apply plugin: "eclipse"
 	apply plugin: "idea"
-	
+
 	afterEvaluate {
 		project.apply plugin: 'maven-publish'
-		
+
 		project.publishing {
 			repositories {
 				maven {
@@ -40,6 +40,11 @@ subprojects { project ->
 					}
 				}
 			}
+			publications {
+				mavenJava(MavenPublication) {
+					from components.java
+				}
+			}			
 		}
 	}
 	

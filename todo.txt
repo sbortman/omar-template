@@ -1,7 +1,6 @@
 TODO:
 
 - More robust scripts (grails profile? gradle tasks?)
-- Publish app to nexus not working
 - Spring Cloud
 - Docker
 - Openshit

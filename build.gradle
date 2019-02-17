@@ -30,6 +30,9 @@ subprojects { project ->
 	afterEvaluate {
 		project.apply plugin: 'maven-publish'
 
+		project.publish.dependsOn assemble
+		project.publishToMavenLocal.dependsOn assemble
+
 		project.publishing {
 			repositories {
 				maven {

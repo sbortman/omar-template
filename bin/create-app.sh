@@ -36,3 +36,24 @@ dependencies {
 }
 */
 EOL
+
+# Setup Spring Cloud
+cat >grails-app/conf/bootstrap.yml <<EOL
+---
+spring:
+  application:
+    name: ${TARGET::-4}
+  cloud:
+    config:
+      enabled: false
+      uri: http://localhost:8888
+    discovery:
+      enabled: false
+    service-registry:
+      auto-registration:
+        enabled: \${spring.cloud.discovery.enabled}
+EOL
+
+APPLICATION_FILE=$(find . -name Application.groovy)
+cp $(dirname $SOURCE)/../apps/omar-template-app/grails-app/init/omar/template/app/Application.groovy ${APPLICATION_FILE}
+sed -i '' "s/omar.template/${TARGET//-/.}/g" ${APPLICATION_FILE}

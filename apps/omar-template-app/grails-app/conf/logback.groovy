@@ -36,3 +36,4 @@ if ( Environment.isDevelopmentMode() && targetDir != null )
 }
 root( ERROR, [ 'STDOUT' ] )
 logger( 'omar', INFO, [ 'STDOUT' ], false )
+

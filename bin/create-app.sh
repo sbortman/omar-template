@@ -57,3 +57,7 @@ EOL
 APPLICATION_FILE=$(find . -name Application.groovy)
 cp $(dirname $SOURCE)/../apps/omar-template-app/grails-app/init/omar/template/app/Application.groovy ${APPLICATION_FILE}
 sed -i '' "s/omar.template/${TARGET//-/.}/g" ${APPLICATION_FILE}
+
+
+mkdir -p $PWD/src/main/docker
+cp $(dirname $SOURCE)/../apps/omar-template-app/src/main/docker/* $PWD/src/main/docker

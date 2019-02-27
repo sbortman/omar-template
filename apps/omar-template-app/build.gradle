@@ -12,3 +12,92 @@ dependencies {
     // compile "io.ossim.omar.plugins:omar-core-plugin:+"          
     }
 }
+
+apply plugin: 'com.bmuschko.docker-remote-api'
+apply plugin: com.bmuschko.gradle.docker.DockerRemoteApiPlugin
+
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
+import com.bmuschko.gradle.docker.tasks.image.DockerTagImage
+import com.bmuschko.gradle.docker.tasks.image.Dockerfile
+
+ext {
+    dockerRegistry = project.dockerRegistry
+    dockerRepo = project.dockerRepo
+    dockerTag = "${ project.name }:${ project.version }".toLowerCase()
+    dockerBuildDir = mkdir( "${ project.buildDir }/docker" )
+}
+
+task prepareDocker( type: Copy, dependsOn: assemble ) {
+    description = 'Copy files from src/main/docker and application jar to Docker temporal build directory'
+    group = 'Docker'
+    
+    from 'src/main/docker'
+    from project.jar
+    
+    into dockerBuildDir
+}
+
+task createDockerfile( type: Dockerfile, dependsOn: prepareDocker ) {
+    description = 'Create a Dockerfile file'
+    group = 'Docker'
+    
+    destFile = project.file( "${ dockerBuildDir }/Dockerfile" )
+    
+    from 'openjdk:8-jdk-alpine'
+    
+    label( [
+      maintainer: 'John Doe "john.doe@example.com"'
+    ] )
+    
+    exposePort 8080
+    
+    workingDir '/app'
+    
+    copyFile jar.archiveName, 'application.jar'
+    copyFile 'app-entrypoint.sh', 'app-entrypoint.sh'
+    runCommand 'chmod +x app-entrypoint.sh'
+
+//	entryPoint '/app/app-entrypoint.sh'
+    defaultCommand '/app/app-entrypoint.sh'
+    
+    onlyIf {
+        !file( "${ projectDir }/src/main/docker/Dockerfile" ).exists()
+    }
+}
+
+task buildImage( type: DockerBuildImage, dependsOn: createDockerfile ) {
+    description = 'Create Docker image to run the Grails application'
+    group = 'Docker'
+    
+    inputDir = file( dockerBuildDir )
+    
+    tags = [ "${ project.dockerTag }".toString() ]
+}
+
+task tagImage( type: DockerTagImage, dependsOn: buildImage ) {
+    group = 'Docker'
+    description = "Tag custom docker image."
+    
+    targetImageId buildImage.getImageId()
+    
+    repository = "${ dockerRegistry }/${ dockerRepo }/${ project.name }".toString()
+    tag = projectVersion
+}
+
+docker {
+    registryCredentials {
+        url = dockerRegistry
+        username = System.getenv( 'QUAY_USERNAME' )
+        password = System.getenv( 'QUAY_PASSWORD' )
+    }
+}
+
+
+task pushImage( type: DockerPushImage, dependsOn: tagImage ) {
+    group = 'Docker'
+    description = "Push custom docker image."
+    
+    tag = projectVersion
+    imageName = "${ dockerRegistry }/${ dockerRepo }/${ project.name }".toString()
+}

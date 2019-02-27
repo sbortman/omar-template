@@ -1,7 +1,6 @@
 TODO:
 
 - More robust scripts (grails profile? gradle plugin/tasks?)
-- Docker
 - Openshit
 - Jenkins Pipeline
 - Move module list from  settings.gradle to gradle.properties

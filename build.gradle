@@ -176,11 +176,6 @@ subprojects { project ->
 		
 		if ( isGrailsApp )
 		{
-//			import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
-//			import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
-//			import com.bmuschko.gradle.docker.tasks.image.DockerTagImage
-//			import com.bmuschko.gradle.docker.tasks.image.Dockerfile
-			
 			ext {
 				dockerRegistry = project.dockerRegistry
 				dockerRepo = project.dockerRepo
@@ -217,8 +212,8 @@ subprojects { project ->
 				copyFile jar.archiveName, 'application.jar'
 				copyFile 'app-entrypoint.sh', 'app-entrypoint.sh'
 				runCommand 'chmod +x app-entrypoint.sh'
-
-//	entryPoint '/app/app-entrypoint.sh'
+				
+				//	entryPoint '/app/app-entrypoint.sh'
 				defaultCommand '/app/app-entrypoint.sh'
 				
 				onlyIf {
@@ -261,7 +256,6 @@ subprojects { project ->
 				imageName = "${ dockerRegistry }/${ dockerRepo }/${ project.name }".toString()
 			}
 		}
-		
 	}
 }
 

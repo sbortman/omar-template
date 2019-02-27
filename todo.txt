@@ -4,3 +4,4 @@ TODO:
 - Openshit
 - Jenkins Pipeline
 - Move module list from  settings.gradle to gradle.properties
+- Fill out plugin publishing properties

@@ -1,6 +1,6 @@
 TODO:
 
-- More robust scripts (grails profile? gradle tasks?)
+- More robust scripts (grails profile? gradle plugin/tasks?)
 - Docker
 - Openshit
 - Jenkins Pipeline

@@ -54,10 +54,13 @@ spring:
         enabled: \${spring.cloud.discovery.enabled}
 EOL
 
+# Copy Spring Cloud Annotation
 APPLICATION_FILE=$(find . -name Application.groovy)
 cp $(dirname $SOURCE)/../apps/omar-template-app/grails-app/init/omar/template/app/Application.groovy ${APPLICATION_FILE}
 sed -i '' "s/omar.template/${TARGET//-/.}/g" ${APPLICATION_FILE}
 
-
+# Copy Docker starter files
 mkdir -p $PWD/src/main/docker
 cp $(dirname $SOURCE)/../apps/omar-template-app/src/main/docker/* $PWD/src/main/docker
+
+

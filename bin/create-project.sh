@@ -10,7 +10,11 @@ cp $(dirname $SOURCE)/../.gitignore  $PWD/$TARGET
 cp $(dirname $SOURCE)/../settings.gradle  $PWD/$TARGET
 cp $(dirname $SOURCE)/../gradle.properties  $PWD/$TARGET
 cp $(dirname $SOURCE)/../build.gradle  $PWD/$TARGET
-gradle wrapper
 
 # Set the projectGroup
 sed -i '' "s/omar.template/${TARGET//-/.}/g" $PWD/$TARGET/gradle.properties
+
+# Create gradle wrapper
+cd $PWD/$TARGET
+gradle wrapper
+

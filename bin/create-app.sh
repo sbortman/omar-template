@@ -6,10 +6,11 @@ TARGET=$1
 mkdir $PWD/apps
 cd $PWD/apps
 
-# Target MUST end with -app suffix for this to work
-grails create-app $TARGET
+# Will append with -app suffix to app name
+APP_NAME=$TARGET-app
+grails create-app $APP_NAME
 
-cd $TARGET
+cd $APP_NAME
 
 # Get rid of unnecessary files
 rm -rf .gitignore \
@@ -42,7 +43,7 @@ cat >grails-app/conf/bootstrap.yml <<EOL
 ---
 spring:
   application:
-    name: ${TARGET::-4}
+    name: ${TARGET}
   cloud:
     config:
       enabled: false
@@ -53,6 +54,11 @@ spring:
       auto-registration:
         enabled: \${spring.cloud.discovery.enabled}
 EOL
+
+# Copy default configuration
+CONFIG_FILE=$(find . -name application.yml)
+cp $(dirname $SOURCE)/../apps/omar-template-app/grails-app/conf/application.yml ${CONFIG_FILE}
+sed -i '' "s/omar.template/${TARGET//-/.}/g" ${CONFIG_FILE}
 
 # Copy Spring Cloud Annotation
 APPLICATION_FILE=$(find . -name Application.groovy)

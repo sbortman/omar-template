@@ -6,10 +6,11 @@ TARGET=$1
 mkdir $PWD/plugins
 cd $PWD/plugins
 
-# Target MUST end with -plugin suffix for this to work
-grails create-plugin $TARGET
+# Will append -plugin suffix to plugin name
+PLUGIN_NAME=$TARGET-plugin
+grails create-plugin $PLUGIN_NAME
 
-cd $TARGET
+cd $PLUGIN_NAME
 
 # Get rid of unnecessary files
 rm -rf .gitignore \
